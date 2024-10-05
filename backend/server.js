@@ -1,12 +1,13 @@
 const express = require("express");
 const dbConnect = require("./config/database");
+const cors = require("cors");
 // const {user} = require("./routes/user");
 // const {artisans} = require("./routes/artisans");
 const authRoutes = require("./routes/auth");
 
 
 const app = express();
-
+app.use(cors());
 require("dotenv").config();
 const PORT = process.env.PORT || 4000;
 

@@ -1,231 +1,238 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
-const statesWithCities = {
-  "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore"],
-  "Bihar": ["Patna", "Gaya", "Bhagalpur"],
-  "Delhi": ["New Delhi", "Dwarka", "Saket"],
-  "Gujarat": ["Ahmedabad", "Surat", "Vadodara"],
-  "Karnataka": ["Bengaluru", "Mysore", "Hubli"],
-  "Maharashtra": ["Mumbai", "Pune", "Nagpur"],
-  "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur"],
-  "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai"],
-  "Uttar Pradesh": ["Lucknow", "Kanpur", "Noida"],
-  "West Bengal": ["Kolkata", "Howrah", "Durgapur"],
-};
-
-function SignUp() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    role: 'user', // Default to 'user'
-    address: '',
-    city: '',
-    state: '',
-    country: 'India', // Default to India
-    phone_number: '',
+export default function ModernSignup() {
+  const [formState, setFormState] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    phone: "",
   });
+
+  const handleInputChange = (e) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+  };
+
+  const handleRoleChange = (e) => {
+    setFormState({ ...formState, role: e.target.value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Sign Up Submitted:', formData);
-    // Add logic here for form validation or calling an API
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleStateChange = (e) => {
-    const selectedState = e.target.value;
-    setFormData({ ...formData, state: selectedState, city: '' });
-  };
-
-  const handleCityChange = (e) => {
-    const selectedCity = e.target.value;
-    setFormData({ ...formData, city: selectedCity });
+    console.log("Form submitted:", formState);
+    // Here you would typically send the form data to your backend
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F5E4D2] px-4">
-      <motion.div 
-        initial={{ opacity: 0, y: 50 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.6 }}
-        className="max-w-2xl w-full bg-[#E6D2B5] shadow-lg rounded-lg p-8"
-      >
-        <h2 className="text-4xl font-bold text-[#708238] mb-4">Sign Up</h2>
-        <p className="text-lg text-[#4A5724] mb-8">Create your account by filling in the details below</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 z-0">
+        <motion.div
+          className="absolute inset-0 bg-blue-200 opacity-20"
+          animate={{
+            scale: [1, 1.1, 1],
+            rotate: [0, 10, -10, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Name */}
-          <div>
-            <label htmlFor="name" className="block text-[#4A5724] text-lg">Name</label>
-            <motion.input
-              whileFocus={{ scale: 1.05 }}
-              type="text"
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md z-10"
+      >
+        <div className="text-center mb-8">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            className="w-24 h-24 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg"
+          >
+            <span className="text-white text-3xl font-bold">Logo</span>
+          </motion.div>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Sign Up</h1>
+          <p className="text-gray-600">Join our community and start your journey</p>
+        </div>
+
+        <motion.form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-2xl rounded-lg p-8 space-y-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <div className="space-y-2">
+            <label htmlFor="name" className="text-sm font-medium text-gray-700">Name</label>
+            <input
               id="name"
               name="name"
-              value={formData.name}
-              onChange={handleChange}
+              placeholder="John Doe"
+              value={formState.name}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-200"
               required
-              placeholder="Your Name"
-              className="w-full p-4 border rounded-lg bg-[#F0E2CC] border-[#708238] text-[#4A5724] text-lg"
             />
           </div>
 
-          {/* Email */}
-          <div>
-            <label htmlFor="email" className="block text-[#4A5724] text-lg">Email</label>
-            <motion.input
-              whileFocus={{ scale: 1.05 }}
-              type="email"
+          <div className="space-y-2">
+            <label htmlFor="email" className="text-sm font-medium text-gray-700">Email</label>
+            <input
               id="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
+              type="email"
+              placeholder="john@example.com"
+              value={formState.email}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-200"
               required
-              placeholder="you@example.com"
-              className="w-full p-4 border rounded-lg bg-[#F0E2CC] border-[#708238] text-[#4A5724] text-lg"
             />
           </div>
 
-          {/* Password */}
-          <div>
-            <label htmlFor="password" className="block text-[#4A5724] text-lg">Password</label>
-            <motion.input
-              whileFocus={{ scale: 1.05 }}
-              type="password"
+          <div className="space-y-2">
+            <label htmlFor="password" className="text-sm font-medium text-gray-700">Password</label>
+            <input
               id="password"
               name="password"
-              value={formData.password}
-              onChange={handleChange}
+              type="password"
+              placeholder="••••••••"
+              value={formState.password}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-200"
               required
-              placeholder="Password (min 8 characters, 1 special character)"
-              className="w-full p-4 border rounded-lg bg-[#F0E2CC] border-[#708238] text-[#4A5724] text-lg"
             />
           </div>
 
-          {/* Role */}
-          <div>
-            <label htmlFor="role" className="block text-[#4A5724] text-lg">Role</label>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">Role</label>
+            <div className="flex space-x-4">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  value="developer"
+                  name="role"
+                  onChange={handleRoleChange}
+                />
+                <label>Developer</label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  value="designer"
+                  name="role"
+                  onChange={handleRoleChange}
+                />
+                <label>Designer</label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  value="manager"
+                  name="role"
+                  onChange={handleRoleChange}
+                />
+                <label>Manager</label>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="address" className="text-sm font-medium text-gray-700">Address</label>
+            <input
+              id="address"
+              name="address"
+              placeholder="123 Main St"
+              value={formState.address}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label htmlFor="city" className="text-sm font-medium text-gray-700">City</label>
+              <input
+                id="city"
+                name="city"
+                placeholder="New York"
+                value={formState.city}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="state" className="text-sm font-medium text-gray-700">State</label>
+              <input
+                id="state"
+                name="state"
+                placeholder="NY"
+                value={formState.state}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="country" className="text-sm font-medium text-gray-700">Country</label>
             <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              required
-              className="w-full p-4 border rounded-lg bg-[#F0E2CC] border-[#708238] text-[#4A5724] text-lg"
+              id="country"
+              name="country"
+              value={formState.country}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-200"
             >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
+              <option value="">Select your country</option>
+              <option value="us">United States</option>
+              <option value="ca">Canada</option>
+              <option value="uk">United Kingdom</option>
+              <option value="au">Australia</option>
             </select>
           </div>
 
-          {/* Address */}
-          <div>
-            <label htmlFor="address" className="block text-[#4A5724] text-lg">Address</label>
-            <motion.input
-              whileFocus={{ scale: 1.05 }}
-              type="text"
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              required
-              placeholder="Your Address"
-              className="w-full p-4 border rounded-lg bg-[#F0E2CC] border-[#708238] text-[#4A5724] text-lg"
+          <div className="space-y-2">
+            <label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone Number</label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              placeholder="+1 (555) 123-4567"
+              value={formState.phone}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-200"
             />
           </div>
 
-          {/* State and City */}
-          <div className="flex space-x-4">
-            {/* State Dropdown */}
-            <div className="w-1/2">
-              <label htmlFor="state" className="block text-[#4A5724] text-lg">State</label>
-              <select
-                id="state"
-                name="state"
-                value={formData.state}
-                onChange={handleStateChange}
-                required
-                className="w-full p-4 border rounded-lg bg-[#F0E2CC] border-[#708238] text-[#4A5724] text-lg"
-              >
-                <option value="">Select State</option>
-                {Object.keys(statesWithCities).map((state) => (
-                  <option key={state} value={state}>{state}</option>
-                ))}
-              </select>
-            </div>
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          >
+            Sign Up
+          </button>
+        </motion.form>
 
-            {/* City Dropdown */}
-            <div className="w-1/2">
-              <label htmlFor="city" className="block text-[#4A5724] text-lg">City</label>
-              <select
-                id="city"
-                name="city"
-                value={formData.city}
-                onChange={handleCityChange}
-                required
-                className="w-full p-4 border rounded-lg bg-[#F0E2CC] border-[#708238] text-[#4A5724] text-lg"
-                disabled={!formData.state} // Disable city dropdown until a state is selected
-              >
-                <option value="">Select City</option>
-                {formData.state && statesWithCities[formData.state]?.map((city) => (
-                  <option key={city} value={city}>{city}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Country and Phone Number */}
-          <div className="flex space-x-4">
-            <div className="w-1/2">
-              <label htmlFor="country" className="block text-[#4A5724] text-lg">Country</label>
-              <motion.input
-                whileFocus={{ scale: 1.05 }}
-                type="text"
-                id="country"
-                name="country"
-                value={formData.country}
-                onChange={handleChange}
-                required
-                placeholder="Your Country"
-                className="w-full p-4 border rounded-lg bg-[#F0E2CC] border-[#708238] text-[#4A5724] text-lg"
-              />
-            </div>
-
-            <div className="w-1/2">
-              <label htmlFor="phone_number" className="block text-[#4A5724] text-lg">Phone Number</label>
-              <motion.input
-                whileFocus={{ scale: 1.05 }}
-                type="tel"
-                id="phone_number"
-                name="phone_number"
-                value={formData.phone_number}
-                onChange={handleChange}
-                required
-                placeholder="Your Phone Number"
-                className="w-full p-4 border rounded-lg bg-[#F0E2CC] border-[#708238] text-[#4A5724] text-lg"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-center">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              type="submit"
-              className="w-full p-4 bg-[#4A5724] text-[#F0E2CC] rounded-lg text-xl font-bold"
-            >
-              Sign Up
-            </motion.button>
-          </div>
-        </form>
+        <motion.p
+          className="text-center mt-6 text-gray-600"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-600 hover:underline font-medium">
+            Login
+          </a>
+        </motion.p>
       </motion.div>
     </div>
   );
 }
-
-export default SignUp;

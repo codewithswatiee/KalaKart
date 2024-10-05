@@ -1,7 +1,8 @@
 const express = require("express");
-const {dbConnect} = require("./config/database");
-const {user} = require("./routes/user");
-const {artisans} = require("./routes/artisans");
+const dbConnect = require("./config/database");
+// const {user} = require("./routes/user");
+// const {artisans} = require("./routes/artisans");
+const authRoutes = require("./routes/auth");
 
 
 const app = express();
@@ -9,12 +10,18 @@ const app = express();
 require("dotenv").config();
 const PORT = process.env.PORT || 4000;
 
-app.use(express.json);
-app.use("/user", user);
-app.use("/artisans", artisans);
-dbConnect();
+app.use(express.json());
+// app.use("/user", user);
+// app.use("/artisans", artisans);
+
+app.use("/auth", authRoutes);
+app.use("/" , (req, res) => {
+    res.send("Hello World");
+})
 app.listen(PORT, () => {
     console.log("app running successfully");
 })
+dbConnect();
+
 
 

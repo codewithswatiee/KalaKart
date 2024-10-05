@@ -5,5 +5,5 @@ const blogCommentSchema = new mongoose.Schema({
     created_at: { type: Date, default: Date.now }
   });
   
-mongoose.model('BlogComment', blogCommentSchema);
+  module.exports = mongoose.model('BlogComment', blogCommentSchema);
   

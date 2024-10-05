@@ -7,5 +7,5 @@ const orderItemSchema = new mongoose.Schema({
     created_at: { type: Date, default: Date.now }
   });
   
-mongoose.model('OrderItem', orderItemSchema);
+  module.exports = mongoose.model('OrderItem', orderItemSchema);
   

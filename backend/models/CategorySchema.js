@@ -3,5 +3,5 @@ const categorySchema = new mongoose.Schema({
     created_at: { type: Date, default: Date.now }
   });
   
-mongoose.model('Category', categorySchema);
+  module.exports = mongoose.model('Category', categorySchema);
   

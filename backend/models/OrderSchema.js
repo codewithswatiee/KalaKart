@@ -8,5 +8,5 @@ const orderSchema = new mongoose.Schema({
     created_at: { type: Date, default: Date.now }
   });
   
-mongoose.model('Order', orderSchema);
+  module.exports = mongoose.model('Order', orderSchema);
   

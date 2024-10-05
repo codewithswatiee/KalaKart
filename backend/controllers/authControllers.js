@@ -1,12 +1,12 @@
 const bcrypt = require("bcrypt");
-const User = require("../model/User");
-const jwt  = require("jsonwebtoken");
+const User = require("../models/userSchema");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 // signup route handler
 exports.signup = async (req, res) => {
     try{
         // get data
-        const {name, email, password, role} =  req.body;
+        const {name, email, password, role } =  req.body;
         // check if user already exist
         const existingUser = await User.findOne({email});
         if(existingUser){
@@ -49,7 +49,7 @@ exports.login = async (req, res) => {
     try{
         const {email, password} = req.body;
         if(!email || !password){
-            return res.status(400).json({
+            return res.status(401).json({
                 success: false,
                 message: "Data incomplete",
             })
@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
 
         let user = await User.findOne({email});
         if(!user){
-            return res.status(400).json({
+            return res.status(401).json({
                 success: false,
                 message: "Invalid Email or Password",
             })
@@ -80,7 +80,7 @@ exports.login = async (req, res) => {
                 expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
                 httpOnly: true
             }
-            res.cookie("token", token, options).status(200).json({
+            res.cookie("token", token, options).status(201).json({
                 success: true,
                 token,
                 user,
@@ -89,14 +89,14 @@ exports.login = async (req, res) => {
         }
         else{
             // password didnot match
-            res.status(403).json({
+            res.status(401).json({
                 success: false,
                 message: "Incorrect Password"
             })
         }
     } catch (err){
         console.error(err);
-        res.status(500).json({
+        res.status(401).json({
             success: false,
             message: "User can't be Logged in! Please try again later"
         })

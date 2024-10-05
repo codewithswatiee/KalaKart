@@ -7,5 +7,5 @@ const artisanSchema = new mongoose.Schema({
     updated_at: { type: Date, default: Date.now }
   });
   
-mongoose.model('Artisan', artisanSchema);
+  module.exports = mongoose.model('Artisan', artisanSchema);
   

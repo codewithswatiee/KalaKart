@@ -2,13 +2,13 @@
 const mongoose = require("mongoose");
 
 // Importing the environment variables using the dotenv library
-require("dotenv");
+require("dotenv").config();
 
 // Defining a function to connect to the database
 const dbConnect = () => {
 	// Connecting to the database using the provided URL from the environment variables
-	mongoose
-		.connect(process.env.MONGODB_URL)
+	mongoose.connect(process.env.MONGODB_URL
+        )
 		// If the connection is successful, log a success message
 		.then(() => console.log("DB CONNECTION SUCCESS"))
 		// If there are issues connecting to the database, log an error message and exit the process

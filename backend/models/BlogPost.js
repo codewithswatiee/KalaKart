@@ -7,5 +7,5 @@ const blogPostSchema = new mongoose.Schema({
     updated_at: { type: Date, default: Date.now }
   });
   
-mongoose.model('BlogPost', blogPostSchema);
+  module.exports = mongoose.model('BlogPost', blogPostSchema);
   

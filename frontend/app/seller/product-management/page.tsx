@@ -1,119 +1,103 @@
-"use client"
+import { useState, useEffect } from "react";
+import { Bell, DollarSign } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import axios from "axios";
 
-import { useState } from "react"
-import { Bell, ChevronDown, DollarSign, Package, ShoppingCart, Users } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+// Define types for sales data, orders, and low stock items
+interface SalesData {
+  name: string;
+  sales: number;
+}
+
+interface Order {
+  id: string;
+  status: string;
+  total: number;
+}
+
+interface LowStockItem {
+  id: string;
+  name: string;
+  stock: number;
+}
 
 export default function SellerDashboard() {
-  const [salesData] = useState([
-    { name: "Mon", sales: 4000 },
-    { name: "Tue", sales: 3000 },
-    { name: "Wed", sales: 2000 },
-    { name: "Thu", sales: 2780 },
-    { name: "Fri", sales: 1890 },
-    { name: "Sat", sales: 2390 },
-    { name: "Sun", sales: 3490 },
-  ])
+  const [salesData, setSalesData] = useState<SalesData[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [lowStockItems, setLowStockItems] = useState<LowStockItem[]>([]);
 
-  const [orders] = useState([
-    { id: 1, customer: "Alice Smith", status: "Processing", product: "Handmade Vase", total: 89.99 },
-    { id: 2, customer: "Bob Johnson", status: "Shipped", product: "Woven Basket", total: 45.50 },
-    { id: 3, customer: "Carol Williams", status: "Delivered", product: "Pottery Set", total: 129.99 },
-  ])
+  // Fetch sales data
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      try {
+        const response = await axios.get<SalesData[]>('/api/sales-data'); // API endpoint for sales data
+        setSalesData(response.data);
+      } catch (error) {
+        console.error("Error fetching sales data:", error);
+      }
+    };
 
-  const [lowStockItems] = useState([
-    { id: 1, name: "Ceramic Mugs", stock: 3 },
-    { id: 2, name: "Wooden Spoons", stock: 5 },
-  ])
+    fetchSalesData();
+  }, []);
+
+  // Fetch orders data
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get<Order[]>('/api/orders'); // API endpoint for orders
+        setOrders(response.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  // Fetch low stock items
+  useEffect(() => {
+    const fetchLowStockItems = async () => {
+      try {
+        const response = await axios.get<LowStockItem[]>('/api/low-stock'); // API endpoint for low stock items
+        setLowStockItems(response.data);
+      } catch (error) {
+        console.error("Error fetching low stock items:", error);
+      }
+    };
+
+    fetchLowStockItems();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FFEEAD]">
-      <header className="sticky top-0 z-10 bg-[#A66E38] text-white p-4 shadow-md">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Artisan Dashboard</h1>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="/placeholder-avatar.jpg" alt="User" />
-                  <AvatarFallback>U</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">Artisan Name</p>
-                  <p className="text-xs leading-none text-muted-foreground">artisan@example.com</p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Log out</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+      <header className="bg-[#A66E38] text-white p-4">
+        <h1 className="text-xl font-bold">Seller Dashboard</h1>
       </header>
+
       <main className="flex-grow container mx-auto p-4 md:p-6 space-y-6">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {/* Total Sales Card */}
           <Card className="bg-white">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
               <DollarSign className="h-4 w-4 text-[#A66E38]" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$5,231.89</div>
+              <div className="text-2xl font-bold">
+                ${salesData.reduce((acc, item) => acc + item.sales, 0).toFixed(2)}
+              </div>
               <p className="text-xs text-muted-foreground">+20.1% from last month</p>
             </CardContent>
           </Card>
-          <Card className="bg-white">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
-              <ShoppingCart className="h-4 w-4 text-[#A66E38]" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+251</div>
-              <p className="text-xs text-muted-foreground">+18.7% from last month</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-white">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">New Customers</CardTitle>
-              <Users className="h-4 w-4 text-[#A66E38]" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+48</div>
-              <p className="text-xs text-muted-foreground">+12.3% from last month</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-white">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Inventory Items</CardTitle>
-              <Package className="h-4 w-4 text-[#A66E38]" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">132</div>
-              <p className="text-xs text-muted-foreground">+3 added this month</p>
-            </CardContent>
-          </Card>
+
+          {/* Additional cards (Orders, Customers, Inventory) can be added here */}
         </div>
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+          {/* Sales Overview Chart */}
           <Card className="md:col-span-4 bg-white">
             <CardHeader>
               <CardTitle>Sales Overview</CardTitle>
@@ -130,10 +114,12 @@ export default function SellerDashboard() {
               </ResponsiveContainer>
             </CardContent>
           </Card>
+
+          {/* Recent Orders Table */}
           <Card className="md:col-span-3 bg-white">
             <CardHeader>
               <CardTitle>Recent Orders</CardTitle>
-              <CardDescription>You have {orders.length} new orders</CardDescription>
+              <p>You have {orders.length} new orders</p>
             </CardHeader>
             <CardContent>
               <Table>
@@ -159,72 +145,33 @@ export default function SellerDashboard() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Low Stock Alerts */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-          <Card className="md:col-span-4 bg-white">
-            <CardHeader>
-              <CardTitle>Earnings Summary</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="flex-1 space-y-1">
-                    <p className="text-sm font-medium leading-none">Pending Payments</p>
-                    <p className="text-sm text-muted-foreground">$1,234.56</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium leading-none">68%</p>
-                  </div>
-                </div>
-                <Progress
-                value={68}
-                className="h-2 bg-[#96CEB4]"
-                style={{ background: "linear-gradient(to right, #FFAD60 68%, transparent 68%)" }}
-                />
-
-              </div>
-              <div className="mt-6 space-y-4">
-                <div className="flex items-center">
-                  <div className="flex-1 space-y-1">
-                    <p className="text-sm font-medium leading-none">Completed Payments</p>
-                    <p className="text-sm text-muted-foreground">$5,678.90</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium leading-none">32%</p>
-                  </div>
-                </div>
-                <Progress
-                value={32}
-                className="h-2 bg-[#96CEB4]"
-                style={{ background: "linear-gradient(to right, #A66E38 32%, transparent 32%)" }}
-                />
-
-              </div>
-            </CardContent>
-          </Card>
           <Card className="md:col-span-3 bg-white">
             <CardHeader>
               <CardTitle>Low Stock Alerts</CardTitle>
-              <CardDescription>Items that need restocking</CardDescription>
+              <p>Items that need restocking</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {lowStockItems.map((item) => (
-                  <Alert key={item.id} variant="destructive">
-                    <Bell className="h-4 w-4" />
-                    <AlertTitle>Low Stock: {item.name}</AlertTitle>
-                    <AlertDescription>
-                      Only {item.stock} left in stock. Consider restocking soon.
-                    </AlertDescription>
-                  </Alert>
+                  <div key={item.id} className="flex items-center p-2 bg-red-100 rounded-md">
+                    <Bell className="h-4 w-4 mr-2 text-red-600" />
+                    <div>
+                      <strong>{item.name}</strong> - Only {item.stock} left in stock. Consider restocking soon.
+                    </div>
+                  </div>
                 ))}
               </div>
             </CardContent>
           </Card>
         </div>
       </main>
+
       <footer className="bg-[#A66E38] text-white p-4 text-center">
         <p>&copy; 2023 Artisan Marketplace. All rights reserved.</p>
       </footer>
     </div>
-  )
+  );
 }

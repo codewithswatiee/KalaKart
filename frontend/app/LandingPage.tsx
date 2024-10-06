@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Play, Camera, GraduationCap, Globe2, Facebook, Twitter, Instagram } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Camera, GraduationCap, Globe2, Facebook, Twitter, Instagram, X, Info } from 'lucide-react';
+
+
 
 const testimonials = [
   {
@@ -61,6 +63,50 @@ const workshops = [
 export default function ModernLandingPage() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [currentLanguage, setCurrentLanguage] = useState('en');
+  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [showArrow, setShowArrow] = useState(true);
+  const [showHindiGuide, setShowHindiGuide] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Hide the guide after 10 seconds
+    const timer = setTimeout(() => {
+      setShowHindiGuide(false);
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const HindiGuide = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 50 }}
+      className="fixed bottom-16 right-4 bg-white p-4 rounded-lg shadow-lg z-50 max-w-sm">
+      <button
+        onClick={() => setShowHindiGuide(false)}
+        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+      >
+        <X size={20} />
+      </button>
+      <h3 className="text-lg font-bold mb-2 text-[#795757]">लिंक गाइड (हिंदी में)</h3>
+      <ul className="text-sm space-y-2 text-[#3B3030]">
+        <li><strong>साइन अप:</strong> कलाकार या खरीदार के रूप में पंजीकरण करें</li>
+        <li><strong>कलाकार उत्पाद खोजें:</strong> हस्तशिल्प उत्पादों की खोज करें</li>
+        <li><strong>अभी सीखें:</strong> कार्यशालाओं के बारे में जानकारी प्राप्त करें</li>
+        <li><strong>रोजगार प्राप्त करें:</strong> छात्रों के लिए अवसर</li>
+        <li><strong>अभी आवेदन करें:</strong> फोटोग्राफरों के लिए अवसर</li>
+        <li><strong>फुटर लिंक:</strong> कंपनी जानकारी और सहायता पृष्ठ</li>
+      </ul>
+    </motion.div>
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -95,6 +141,7 @@ export default function ModernLandingPage() {
       </div>
 
       {/* Navigation */}
+
       <nav className="bg-[#795757] text-white py-2 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-7 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold" aria-label="Home">
@@ -105,32 +152,43 @@ export default function ModernLandingPage() {
             <Link href="/buyer/products" className="hover:text-[#FFF0D1] transition duration-300" passHref>Shop</Link>
             <a href="#learn" className="hover:text-[#FFF0D1] transition duration-300">Learn</a>
             <a href="#" className="hover:text-[#FFF0D1] transition duration-300">About</a>
-            <Link href="#" className="hover:text-[#FFF0D1] transition duration-300" passHref>Employment</Link>
-            <div className="relative group">
-  {/* Dropdown menu */}
-  <div className="absolute left-0 mt-2 w-56 hidden group-hover:block bg-white rounded-lg shadow-lg border border-gray-200 transition-all duration-300 ease-out">
-    <ul className="py-2">
-      <li>
-        <Link href="/photographer" className="block px-4 py-3 text-gray-700 hover:bg-[#FFF0D1] hover:text-gray-900 transition-colors duration-200 ease-in-out">
-          Get employed as a Photographer
-        </Link>
-      </li>
-      <li>
-        <Link href="/student" className="block px-4 py-3 text-gray-700 hover:bg-[#FFF0D1] hover:text-gray-900 transition-colors duration-200 ease-in-out">
-          Get employed as a Student Coordinator
-        </Link>
-      </li>
-    </ul>
-  </div>
-</div>
-
-
-            <button className="bg-white text-[#795757] hover:bg-[#FFF0D1] font-bold py-2 px-4 rounded transition duration-300">
-              Login
-            </button>
-            <button className="bg-white text-[#795757] hover:bg-[#FFF0D1] font-bold py-2 px-4 rounded transition duration-300">
-              SignUp
-            </button>
+            <Link href="/empOpp/main" className="hover:text-[#FFF0D1] transition duration-300" passHref>Employment</Link>
+            <div className="relative">
+              <button 
+                className="bg-white text-[#795757] hover:bg-[#FFF0D1] font-bold py-2 px-4 rounded transition duration-300"
+                onClick={() => setIsLoginOpen(!isLoginOpen)}
+              >
+                Login
+              </button>
+              {isLoginOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                  <Link href="/seller/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Kalakar
+                  </Link>
+                  <Link href="/buyer/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Buyer
+                  </Link>
+                </div>
+              )}
+            </div>
+            <div className="relative">
+              <button 
+                className="bg-white text-[#795757] hover:bg-[#FFF0D1] font-bold py-2 px-4 rounded transition duration-300"
+                onClick={() => setIsSignUpOpen(!isSignUpOpen)}
+              >
+                Sign Up
+              </button>
+              {isSignUpOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                  <Link href="/seller/signup" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Register as Kalakar
+                  </Link>
+                  <Link href="/buyer/signup" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Register as Buyer
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
           <button className="md:hidden" aria-label="Toggle menu">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -215,7 +273,7 @@ export default function ModernLandingPage() {
             <GraduationCap className="w-16 h-16 mb-4" />
             <h3 className="text-2xl font-semibold mb-2">Students</h3>
             <p className="mb-4">Gain hands-on experience assisting artisans and learning traditional crafts.</p>
-            <Link href='employment-opportunities' passHref>
+            <Link href='/empOpp/main' passHref>
             <button className="bg-white text-[#795757] hover:bg-[#FFF0D1] font-bold py-2 px-4 rounded transition duration-300">
               Get Employment
             </button>
@@ -335,6 +393,20 @@ export default function ModernLandingPage() {
           <p>&copy; {new Date().getFullYear()} KalaKart. All rights reserved.</p>
         </div>
       </footer>
+      {/* Hindi Guide */}
+      <AnimatePresence>
+        {showHindiGuide && <HindiGuide />}
+      </AnimatePresence>
+
+      {/* Info Button */}
+      <motion.button
+        className="fixed bottom-4 right-4 bg-[#795757] text-white p-2 rounded-full shadow-lg z-50"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setShowHindiGuide(true)}
+      >
+        <Info size={24} />
+      </motion.button>
     </div>
   );
 }

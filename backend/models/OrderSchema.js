@@ -1,22 +1,27 @@
+// models/orderSchema.js
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
 const OrderSchema = new Schema({
-  buyer: { type: Schema.Types.ObjectId, ref: 'Buyer', required: true },
-  products: [{
-    product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-    quantity: { type: Number, required: true }
-  }],
-  totalAmount: { type: Number, required: true },
-  status: { type: String, enum: ['Pending', 'Shipped', 'Delivered', 'Cancelled'], default: 'Pending' },
-  shippingAddress: {
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String, required: true },
-    zipCode: { type: String, required: true }
-  },
-  paymentStatus: { type: String, enum: ['Paid', 'Pending', 'Failed'], default: 'Pending' },
-  placedAt: { type: Date, default: Date.now }
+    buyer: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to the User model (buyer)
+    products: [{ 
+        product: { type: Schema.Types.ObjectId, ref: 'Product' }, // Reference to the Product model
+        quantity: { type: Number, required: true }
+    }],
+    totalPrice: { type: Number, required: true },
+    status: { 
+        type: String, 
+        enum: ['pending', 'completed', 'cancelled'], 
+        default: 'pending' 
+    },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
+});
+
+// Middleware to update the updatedAt field before saving
+OrderSchema.pre('save', function (next) {
+    this.updatedAt = Date.now();
+    next();
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

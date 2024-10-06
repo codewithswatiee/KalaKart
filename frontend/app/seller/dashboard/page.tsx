@@ -113,10 +113,10 @@ export default function SellerPage() {
       <main className="container mx-auto p-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
           <TabsList className="bg-[#664343] text-white">
-            <TabsTrigger value="dashboard" className="data-[state=active]:bg-[#3B3030]">Dashboard</TabsTrigger>
-            <TabsTrigger value="orders" className="data-[state=active]:bg-[#3B3030]">Orders</TabsTrigger>
-            <TabsTrigger value="profile" className="data-[state=active]:bg-[#3B3030]">Profile</TabsTrigger>
-            <TabsTrigger value="help" className="data-[state=active]:bg-[#3B3030]">Help & Support</TabsTrigger>
+            <TabsTrigger value="dashboard" className="data-[state=active]:bg-[#b1a8a8]">Dashboard</TabsTrigger>
+            <TabsTrigger value="orders" className="data-[state=active]:bg-[#b1a8a8]">Orders</TabsTrigger>
+            <TabsTrigger value="profile" className="data-[state=active]:bg-[#b1a8a8]">Profile</TabsTrigger>
+            <TabsTrigger value="help" className="data-[state=active]:bg-[#b1a8a8]">Help & Support</TabsTrigger>
           </TabsList>
           <TabsContent value="dashboard" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

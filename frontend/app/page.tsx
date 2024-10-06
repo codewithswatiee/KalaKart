@@ -1,14 +1,16 @@
-import ModernLandingPage from "./components/LandingPage";
-import CartPage from "./components/buyer/cart";
-import KalaLearn from "./components/buyer/kalaLearn";
-import ProductListingPage from "./components/buyer/products";
-import PhotographerForm from "./components/employmentOpportunities/photographer";
-import StudentCoordinatorForm from "./components/employmentOpportunities/student";
-import KalaLearnArtisan from "./components/seller/kalaLearnSeller";
+import ModernLandingPage from "./LandingPage";
+import CartPage from "./buyer/cart";
+import KalaLearn from "./buyer/learn/page";
+import ProductListingPage from "./buyer/products/page";
+import PhotographerForm from "./employmentOpportunities/photographer";
+import StudentCoordinatorForm from "./employmentOpportunities/student";
+import SellerPage from "./seller/dashboard/page";
+import KalaLearnArtisan from "./seller/kalaLearnSeller";
+import SellerDashboard from "./seller/product-management/page";
 export default function Home() {
   return (
     <>
-      <KalaLearnArtisan></KalaLearnArtisan>
+      <ModernLandingPage></ModernLandingPage>
     </>
   );
 }

@@ -101,16 +101,12 @@ export default function ModernLandingPage() {
             KalaKart
           </Link>
           <div className="hidden text-base md:flex text-[1.1rem] items-center space-x-8">
-            <Link href="/" className="hover:text-[#FFF0D1] transition duration-300">Home</Link>
-            <Link href="#" className="hover:text-[#FFF0D1] transition duration-300">Shop</Link>
-            <Link href="/learn" className="hover:text-[#FFF0D1] transition duration-300">Learn</Link>
-            <Link href="#" className="hover:text-[#FFF0D1] transition duration-300">About</Link>
-            <Link href="#" className="hover:text-[#FFF0D1] transition duration-300">Contact</Link>
+            <Link href="/" className="hover:text-[#FFF0D1] transition duration-300" passHref>Home</Link>
+            <Link href="/buyer/products" className="hover:text-[#FFF0D1] transition duration-300" passHref>Shop</Link>
+            <a href="#learn" className="hover:text-[#FFF0D1] transition duration-300">Learn</a>
+            <a href="#" className="hover:text-[#FFF0D1] transition duration-300">About</a>
+            <Link href="#" className="hover:text-[#FFF0D1] transition duration-300" passHref>Employment</Link>
             <div className="relative group">
-  <Link href="/employment" className="hover:text-[#FFF0D1] transition duration-300 font-semibold text-lg">
-    Employment
-  </Link>
-
   {/* Dropdown menu */}
   <div className="absolute left-0 mt-2 w-56 hidden group-hover:block bg-white rounded-lg shadow-lg border border-gray-200 transition-all duration-300 ease-out">
     <ul className="py-2">
@@ -174,7 +170,7 @@ export default function ModernLandingPage() {
       </section>
 
       {/* Learning Opportunities */}
-      <section className="py-16 px-4 md:px-8 bg-white">
+      <section id='learn' className="py-16 px-4 md:px-8 bg-white">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Learning Opportunities</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {workshops.map((workshop) => (
@@ -197,9 +193,11 @@ export default function ModernLandingPage() {
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">{workshop.title}</h3>
                 <p className="text-[#664343] mb-4">{workshop.description}</p>
-                <button className="bg-[#795757] hover:bg-[#664343] text-white font-bold py-2 px-4 rounded transition duration-300">
-                  Enroll Now
+                <Link href='/buyer/learn' passHref>
+                  <button className="bg-[#795757] hover:bg-[#664343] text-white font-bold py-2 px-4 rounded transition duration-300">
+                  Learn Now
                 </button>
+                </Link>
               </div>
             </motion.div>
           ))}
@@ -207,7 +205,7 @@ export default function ModernLandingPage() {
       </section>
 
       {/* Employment Opportunities */}
-      <section className="py-16 px-4 md:px-8 bg-[#795757] text-white">
+      <section id='employment' className="py-16 px-4 md:px-8 bg-[#795757] text-white">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Employment Opportunities</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <motion.div
@@ -217,9 +215,11 @@ export default function ModernLandingPage() {
             <GraduationCap className="w-16 h-16 mb-4" />
             <h3 className="text-2xl font-semibold mb-2">Students</h3>
             <p className="mb-4">Gain hands-on experience assisting artisans and learning traditional crafts.</p>
+            <Link href='employment-opportunities' passHref>
             <button className="bg-white text-[#795757] hover:bg-[#FFF0D1] font-bold py-2 px-4 rounded transition duration-300">
-              Learn More
+              Get Employment
             </button>
+            </Link>
           </motion.div>
           <motion.div
             whileHover={{ scale: 1.05 }}

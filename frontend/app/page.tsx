@@ -10,7 +10,7 @@ import SellerDashboard from "./seller/product-management/page";
 export default function Home() {
   return (
     <>
-      <ModernLandingPage></ModernLandingPage>
+      
     </>
   );
 }
